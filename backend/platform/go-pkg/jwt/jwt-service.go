@@ -104,9 +104,6 @@ type TokenPair struct {
 type CustomClaims struct {
 	jwt.RegisteredClaims
 
-	// UserID is the UUID of the authenticated user.
-	UserID uuid.UUID `json:"sub"`
-
 	// Email is the user's email address.
 	Email string `json:"email"`
 
@@ -193,7 +190,6 @@ func (s *service) generateToken(userID uuid.UUID, email, tokenType string, ttl t
 			Issuer:    s.config.Issuer,
 			NotBefore: jwt.NewNumericDate(now),
 		},
-		UserID: userID,
 		Email:  email,
 		Type:   tokenType,
 	}
@@ -250,11 +246,10 @@ func (s *service) validateToken(tokenString, expectedType string) (*CustomClaims
 		return nil, fmt.Errorf("%w: expected %s, got %s", ErrInvalidType, expectedType, claims.Type)
 	}
 
-	userID, err := uuid.Parse(claims.Subject)
+	_, err = uuid.Parse(claims.Subject)
 	if err != nil {
 		return nil, fmt.Errorf("%w: invalid user_id format", ErrInvalidToken)
 	}
-	claims.UserID = userID
 
 	return claims, nil
 }

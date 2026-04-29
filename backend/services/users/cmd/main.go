@@ -1,11 +1,6 @@
 package main
 
 import (
-	"auth/config"
-	"auth/controllers"
-	"auth/handlers"
-	"auth/repositories"
-	"auth/routers"
 	"fmt"
 	"log"
 	"platform/go-pkg/database"
@@ -14,6 +9,11 @@ import (
 	"platform/go-pkg/middleware"
 	"platform/go-pkg/validator"
 	"strconv"
+	"users/config"
+	"users/controllers"
+	"users/handlers"
+	"users/repositories"
+	"users/routers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -52,11 +52,11 @@ func main() {
 		log.Fatalf("failed jwt service: %v", err)
 	}
 
-	authController := controllers.NewAuthController(userRepo, jwt)
+	userController := controllers.NewUserController(userRepo, jwt)
 
 	v := validator.New()
 
-	authHandler := handlers.NewAuthHandler(authController, v)
+	userHandler := handlers.NewUserHandler(userController, v)
 
 	// setup gin
 	gin.SetMode(gin.ReleaseMode)
@@ -72,12 +72,12 @@ func main() {
 
 	api := r.Group("/api")
 
-	routers.RegisterAuthRoutes(api, authHandler, middleware.Auth(middleware.AuthConfig{
+	routers.RegisterUserRoutes(api, userHandler, middleware.Auth(middleware.AuthConfig{
 		SecretKey: cfg.JWTSecret,
-		Logger: logger.New("auth"),
+		Logger: logger.New("users"),
 	}))
 
-	log.Printf("auth service running on port %s", cfg.AppPort)
+	log.Printf("users service running on port %s", cfg.AppPort)
 	if err := r.Run(fmt.Sprintf(":%s", cfg.AppPort)); err != nil {
 		log.Fatalf("failed to run server: %v", err)
 	}

@@ -5,6 +5,8 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 func (c *authController) RefreshToken(ctx context.Context, req *types.ReqRefreshToken) (res *types.ResRefreshToken, err error) {
@@ -13,7 +15,7 @@ func (c *authController) RefreshToken(ctx context.Context, req *types.ReqRefresh
 		return nil, fmt.Errorf("unauthorized: refresh token is invalid or expired")
 	}
 
-	exists, err := c.repo.ExistsByID(ctx, claims.UserID.String())
+	exists, err := c.repo.ExistsByID(ctx, claims.Subject)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +24,12 @@ func (c *authController) RefreshToken(ctx context.Context, req *types.ReqRefresh
 		return nil, fmt.Errorf("unauthorized: refresh token is invalid or expired")
 	}
 
-	accessToken, err := c.jwt.GenerateAccessToken(claims.UserID, claims.Email)
+	userID, err := uuid.Parse(claims.Subject)
+	if err != nil {
+		return nil, err
+	}
+
+	accessToken, err := c.jwt.GenerateAccessToken(userID, claims.Email)
 	if err != nil {
 		return nil, err
 	}
