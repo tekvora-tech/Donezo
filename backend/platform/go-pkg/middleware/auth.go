@@ -51,7 +51,7 @@ func Auth(cfg AuthConfig) gin.HandlerFunc {
 		}
 
 		// Simpan data user di context
-		c.Set("user_id", claims.UserID.String())
+		c.Set("user_id", claims.Subject)
 		c.Set("email", claims.Email)
 
 		c.Next()
@@ -87,7 +87,7 @@ func OptionalAuth(cfg AuthConfig) gin.HandlerFunc {
 			return
 		}
 
-		c.Set("user_id", claims.UserID.String())
+		c.Set("user_id", claims.Subject)
 		c.Set("email", claims.Email)
 
 		c.Next()

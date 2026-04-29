@@ -10,7 +10,7 @@ import (
 )
 
 func (h *AuthHandler) RefreshTokenHandler(c *gin.Context) {
-	log.Printf("hit service RefreshToken with request: %v", c.Request)
+	log.Printf("hit service refresh token with request: %v", c.Request)
 
 	refreshToken, err := c.Cookie("refresh_token")
 	if err != nil {
