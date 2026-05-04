@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-tertiary: #94a3b8;
+    --border-color: #e2e8f0;
+    --accent-blue: #60a5fa;
+    --accent-mint: #4ade80;
+    --accent-lavender: #c084fc;
+    --accent-peach: #fb923c;
+    --accent-rose: #fb7185;
+    --accent-lemon: #facc15;
+  }
+
+  .dark {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #64748b;
+    --border-color: #334155;
+    --accent-blue: #60a5fa;
+    --accent-mint: #4ade80;
+    --accent-lavender: #c084fc;
+    --accent-peach: #fb923c;
+    --accent-rose: #fb7185;
+    --accent-lemon: #facc15;
+  }
+
+  body {
+    @apply bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300;
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  * {
+    @apply border-[var(--border-color)];
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-[var(--bg-secondary)] rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[var(--text-tertiary)] rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-[var(--text-secondary)];
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/70 dark:bg-slate-800/70 backdrop-blur-lg border border-white/20 dark:border-slate-700/30 shadow-lg;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-pastel-blue-400 via-pastel-lavender-400 to-pastel-rose-400;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2.5 rounded-xl bg-gradient-to-r from-pastel-blue-400 to-pastel-lavender-400 
+           text-white font-medium shadow-lg shadow-pastel-blue-400/25 
+           hover:shadow-pastel-blue-400/40 hover:scale-[1.02] 
+           active:scale-[0.98] transition-all duration-200;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2.5 rounded-xl bg-[var(--bg-tertiary)] text-[var(--text-primary)] 
+           font-medium hover:bg-[var(--border-color)] 
+           active:scale-[0.98] transition-all duration-200;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border-2 border-[var(--border-color)]
+           text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)]
+           focus:border-pastel-blue-400 focus:ring-4 focus:ring-pastel-blue-400/20
+           outline-none transition-all duration-200;
+  }
+
+  .card-hover {
+    @apply bg-[var(--bg-secondary)] rounded-2xl border border-[var(--border-color)]
+           hover:border-pastel-blue-300/50 hover:shadow-lg hover:shadow-pastel-blue-400/10
+           transition-all duration-300;
+  }
+}
